@@ -13,12 +13,19 @@ router.get("/characters", async (req, res) => {
     const ts = uid2(8);
     const hash = md5(ts + api_private_key + api_public_key);
 
-    const { limit, offset } = req.query;
+    console.log("req.query = ", req.query);
+
+    const { limit, offset, orderBy } = req.query;
+    let search = "";
+    req.query.nameStartsWith === undefined
+      ? (search = "")
+      : (search = "&nameStartsWith=" + req.query.nameStartsWith);
 
     const response = await axios.get(
-      `http://gateway.marvel.com/v1/public/characters?limit=${limit}&offset=${offset}&ts=${ts}&apikey=${api_public_key}&hash=${hash}`
+      `http://gateway.marvel.com/v1/public/characters?limit=${limit}&offset=${offset}&orderBy=${orderBy}${search}&ts=${ts}&apikey=${api_public_key}&hash=${hash}`
     );
     res.status(200).json(response.data);
+    console.log("response : ", response.data.data);
   } catch (error) {
     res.status(400).json({ message: error.message });
   }
