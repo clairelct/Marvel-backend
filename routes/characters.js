@@ -13,8 +13,6 @@ router.get("/characters", async (req, res) => {
     const ts = uid2(8);
     const hash = md5(ts + api_private_key + api_public_key);
 
-    console.log("req.query = ", req.query);
-
     const { limit, offset, orderBy } = req.query;
     let search = "";
     req.query.nameStartsWith === undefined
